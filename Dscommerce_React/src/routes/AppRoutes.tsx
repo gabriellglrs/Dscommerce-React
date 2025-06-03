@@ -10,6 +10,7 @@ function AppRoutes() {
                 <Route path="catalog" element={<Catalog />} />
                 <Route index element={<Catalog />} />
                 <Route path="product-details" element={<ProductDetails />} />
+                <Route path="product-details/:id" element={<ProductDetails />} />
             </Route>
         </Routes>
     );
