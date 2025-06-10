@@ -13,7 +13,7 @@ function headerClient() {
                     <div className="dsc-navbar-right">
                         <div className="dsc-menu-items-container">
                             <div className="dsc-menu-item">
-                                <Link to="/cart">
+                                <Link to="">
                                     <img
                                         src={cartSvg}
                                         alt="Carrinho de compras"
