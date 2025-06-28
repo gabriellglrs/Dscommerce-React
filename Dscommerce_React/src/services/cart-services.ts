@@ -1,4 +1,4 @@
-import { get, save } from "../localstorage/cart-repository";
+import { clear, get, save } from "../localstorage/cart-repository";
 import { OrderDTO, OrderItemDTO } from "../models/order";
 import type { Product } from "../models/Product";
 
@@ -19,6 +19,10 @@ export function addProductToCart(pruduct: Product): void {
         cart.items.push(newItem);
         save(cart);
     }
+}
+
+export function clearCart(): void {
+    clear();
 }
 
 
