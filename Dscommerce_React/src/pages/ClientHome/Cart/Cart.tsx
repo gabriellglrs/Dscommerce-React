@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./Cart.css";
-import { clearCart, getCart } from "../../../services/cart-services";
+import {
+    clearCart,
+    decrementItem,
+    getCart,
+    increaseItem,
+} from "../../../services/cart-services";
 import { OrderDTO } from "../../../models/order";
-import { save } from "../../../localstorage/cart-repository";
 import { Link } from "react-router-dom";
 import { CartNotFound } from "../../../components/CartNotFound/CartNotFound";
-
-
 
 export default function Cart() {
     const [cart, SetCart] = useState<OrderDTO>(getCart());
@@ -17,13 +19,23 @@ export default function Cart() {
         0
     );
 
+    if (!cart?.items || cart.items.length === 0) {
+        return <CartNotFound />;
+    }
+
     function handleClearClick(): void {
         clearCart();
+        SetCart(getCart());
+    }
+
+    function handleIncrementItem(productId: number): void {
+        increaseItem(productId);
         SetCart(getCart())
     }
 
-    if (!cart?.items || cart.items.length === 0) {
-        return <CartNotFound />;
+     function handleDecrementItem(productId: number): void {
+        decrementItem(productId);
+        SetCart(getCart())
     }
 
     return (
@@ -45,11 +57,22 @@ export default function Cart() {
                                         <div className="dsc-cart-item-description">
                                             <h3>{item.name}</h3>
                                             <div className="dsc-cart-item-quantity-container">
-                                                <div className="dsc-cart-item-quantity-btn">
+                                                <div  onClick={() =>
+                                                        handleDecrementItem(
+                                                            item.productId
+                                                        )
+                                                    } className="dsc-cart-item-quantity-btn">
                                                     -
                                                 </div>
                                                 <p>{item.quantity}</p>
-                                                <div className="dsc-cart-item-quantity-btn">
+                                                <div
+                                                    onClick={() =>
+                                                        handleIncrementItem(
+                                                            item.productId
+                                                        )
+                                                    }
+                                                    className="dsc-cart-item-quantity-btn"
+                                                >
                                                     +
                                                 </div>
                                             </div>
@@ -65,7 +88,7 @@ export default function Cart() {
                             </>
                         ))}
                         <div className="dsc-cart-total-container">
-                            <h3>R$ {subtotal.toFixed(2).replace('.', ',')}</h3>
+                            <h3>R$ {subtotal.toFixed(2).replace(".", ",")}</h3>
                         </div>
                     </div>
                     <div className="dsc-btn-page-container">
@@ -89,3 +112,5 @@ export default function Cart() {
         </>
     );
 }
+
+
