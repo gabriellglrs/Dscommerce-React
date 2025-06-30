@@ -9,34 +9,40 @@ import * as productService from "../../../services/product-services";
 import ProductsNotFound from "../../../components/ProductsNotFound/ProductsNotFound";
 
 function Catalog() {
-    const [products, setProducts] = useState<Product[]>([]); 
+    const [products, setProducts] = useState<Product[]>([]);
+    const [productName, setProductName] = useState<string>("");
 
     useEffect(() => {
-
-        productService.findAll()
+        productService
+            .findAll(0, productName)
             .then((response: { data: { content: Product[] } }) => {
                 setProducts(response.data.content);
             })
             .catch(() => {
                 setProducts([]);
             });
-    }, []);
+    }, [productName]);
+
+    function handleSearch(searchText: string) {
+        setProductName(searchText);
+    }
 
     if (products.length === 0) {
         return (
             <main>
                 <section id="catalog-section" className="dsc-container">
-                    <SearchBar></SearchBar>
+                    <SearchBar onSearch={handleSearch} ></SearchBar>
                     <ProductsNotFound />
                 </section>
             </main>
         );
     }
+
     return (
         <>
             <main>
                 <section id="catalog-section" className="dsc-container">
-                    <SearchBar></SearchBar>
+                    <SearchBar onSearch={handleSearch} ></SearchBar>
                     <div className="dsc-catalog-cards dsc-mb20 dsc-mt20">
                         {products.map((product) => (
                             <CatalogCard
