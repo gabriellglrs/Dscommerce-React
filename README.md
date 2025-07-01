@@ -268,7 +268,7 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ## 👨‍💻 Autor
 
-**Gabriel Lopes**
+**Gabriel Lucas :)**
 - GitHub: [@gabriellglrs](https://github.com/gabriellglrs)
 - LinkedIn: [Gabriel Lucas](https://linkedin.com/in/gabriellglrs)
 
