@@ -1,5 +1,5 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import ButtonInverse from "../../../components/buttonInverse/buttonInverse";
+import { ButtonInverse } from "../../../components/buttonInverse/buttonInverse";
 import ButtonPrimary from "../../../components/ButtonPrimary/ButtonPrimary";
 import ProductDetailsCard from "../../../components/ProductDetailsCard/ProductDetailsCard";
 import "./ProductDetails.css";

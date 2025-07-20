@@ -8,30 +8,50 @@ import type { Product } from "../../../models/Product";
 import * as productService from "../../../services/product-services";
 import ProductsNotFound from "../../../components/ProductsNotFound/ProductsNotFound";
 
-function Catalog() {
+interface QueryParams {
+    page: number;
+    name: string;
+}
+
+export function Catalog() {
+    const [isLastPage, setIsLastPage] = useState<boolean>(false);
+
     const [products, setProducts] = useState<Product[]>([]);
-    const [productName, setProductName] = useState<string>("");
+
+    const [queryParams, setQueryParams] = useState<QueryParams>({
+        page: 0,
+        name: "",
+    });
 
     useEffect(() => {
         productService
-            .findAll(0, productName)
-            .then((response: { data: { content: Product[] } }) => {
-                setProducts(response.data.content);
-            })
+            .findAll(queryParams.page, queryParams.name)
+            .then(
+                (response: { data: { content: Product[]; last: boolean } }) => {
+                    const nextPage = response.data.content;
+                    setProducts(products.concat(nextPage));
+                    setIsLastPage(response.data.last);
+                }
+            )
             .catch(() => {
                 setProducts([]);
             });
-    }, [productName]);
+    }, [queryParams]);
 
     function handleSearch(searchText: string) {
-        setProductName(searchText);
+        setProducts([]); // Limpa os produtos
+        setQueryParams({ page: 0, name: searchText }); // Atualiza os parâmetros de busca
+    }
+
+    function handlenextPageClick(): void {
+        setQueryParams({ ...queryParams, page: queryParams.page + 1 });
     }
 
     if (products.length === 0) {
         return (
             <main>
                 <section id="catalog-section" className="dsc-container">
-                    <SearchBar onSearch={handleSearch} ></SearchBar>
+                    <SearchBar onSearch={handleSearch}></SearchBar>
                     <ProductsNotFound />
                 </section>
             </main>
@@ -42,7 +62,7 @@ function Catalog() {
         <>
             <main>
                 <section id="catalog-section" className="dsc-container">
-                    <SearchBar onSearch={handleSearch} ></SearchBar>
+                    <SearchBar onSearch={handleSearch}></SearchBar>
                     <div className="dsc-catalog-cards dsc-mb20 dsc-mt20">
                         {products.map((product) => (
                             <CatalogCard
@@ -51,11 +71,14 @@ function Catalog() {
                             ></CatalogCard>
                         ))}
                     </div>
-                    <ButtonNextPage></ButtonNextPage>
+
+                    {!isLastPage && (
+                        <div onClick={handlenextPageClick}>
+                            <ButtonNextPage></ButtonNextPage>
+                        </div>
+                    )}
                 </section>
             </main>
         </>
     );
 }
-
-export default Catalog;
