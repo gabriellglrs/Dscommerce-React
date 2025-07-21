@@ -1,5 +1,15 @@
-.dsc-btn-white {
-  border: 1px solid var(--dsc-color-btn-primary);
-  background-color: var(--dsc-color-btn-inverse);
-  color: var(--dsc-color-btn-primary);
+.dsc-btn-inverse {
+    background: transparent;
+    color: #1976d2;
+    border: 2px solid #1976d2;
+    border-radius: 4px;
+    padding: 8px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.dsc-btn-inverse:hover {
+    background: #1976d2;
+    color: #fff;
 }

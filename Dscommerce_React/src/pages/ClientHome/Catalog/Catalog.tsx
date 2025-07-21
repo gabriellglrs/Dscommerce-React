@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import "../Catalog/Catalog.css";
 import ButtonNextPage from "../../../components/ButtonNextPage/ButtonNextPage";
 import CatalogCard from "../../../components/CatalogCard/CatalogCard";

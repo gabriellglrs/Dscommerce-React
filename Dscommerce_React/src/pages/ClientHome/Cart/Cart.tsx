@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./Cart.css";
 import {
     clearCart,
@@ -9,9 +9,11 @@ import {
 import { OrderDTO } from "../../../models/order";
 import { Link } from "react-router-dom";
 import { CartNotFound } from "../../../components/CartNotFound/CartNotFound";
+import { ContextCartCount } from "../../../utils/contextCartCount";
 
 export default function Cart() {
     const [cart, SetCart] = useState<OrderDTO>(getCart());
+    const { setCartCount } = useContext(ContextCartCount);
 
     // Calcule o subtotal somando todos os subTotais dos itens
     const subtotal = (cart.items ?? []).reduce(
@@ -23,21 +25,30 @@ export default function Cart() {
         return <CartNotFound />;
     }
 
-    function handleClearClick(): void {
-        clearCart();
-        SetCart(getCart());
-    }
-
     function handleIncrementItem(productId: number): void {
         increaseItem(productId);
-        SetCart(getCart())
+        const newCart = getCart();
+        SetCart(newCart);
+        setCartCount(
+            newCart.items.reduce((acc, item) => acc + item.quantity, 0)
+        );
     }
 
-     function handleDecrementItem(productId: number): void {
+    function handleDecrementItem(productId: number): void {
         decrementItem(productId);
-        SetCart(getCart())
+        const newCart = getCart();
+        SetCart(newCart);
+        setCartCount(
+            newCart.items.reduce((acc, item) => acc + item.quantity, 0)
+        );
     }
 
+    function handleClearClick(): void {
+        clearCart();
+        const newCart = getCart();
+        SetCart(newCart);
+        setCartCount(0);
+    }
     return (
         <>
             <main>
@@ -57,11 +68,14 @@ export default function Cart() {
                                         <div className="dsc-cart-item-description">
                                             <h3>{item.name}</h3>
                                             <div className="dsc-cart-item-quantity-container">
-                                                <div  onClick={() =>
+                                                <div
+                                                    onClick={() =>
                                                         handleDecrementItem(
                                                             item.productId
                                                         )
-                                                    } className="dsc-cart-item-quantity-btn">
+                                                    }
+                                                    className="dsc-cart-item-quantity-btn"
+                                                >
                                                     -
                                                 </div>
                                                 <p>{item.quantity}</p>
@@ -112,5 +126,3 @@ export default function Cart() {
         </>
     );
 }
-
-

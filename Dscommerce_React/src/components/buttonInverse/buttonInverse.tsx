@@ -1,11 +1,14 @@
-import './buttonInverse.css';
+import "./ButtonInverse.css";
 
-type Props = {
+interface ButtonInverseProps {
     nome: string;
+    onClick?: () => void;
 }
 
-export function ButtonInverse({nome}: Props) {
-  return(
-    <div className="dsc-btn dsc-btn-white">{nome}</div>
-  );
+export default function ButtonInverse({ nome, onClick }: ButtonInverseProps) {
+    return (
+        <button className="dsc-btn-inverse" onClick={onClick}>
+            {nome}
+        </button>
+    );
 }

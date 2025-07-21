@@ -57,6 +57,29 @@
 .dsc-cart-item-quantity-container p {
   margin: 0 5px;
 }
+.dsc-btn {
+    padding: 10px 24px;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: background 0.2s, color 0.2s, border 0.2s;
+    margin: 0 8px;
+    display: inline-block;
+    text-align: center;
+}
+
+.dsc-btn-white {
+    background: #fff;
+    color: #1976d2;
+    border: 2px solid #1976d2;
+}
+
+.dsc-btn-white:hover {
+    background: #1976d2;
+    color: #fff;
+}
 
 @media (min-width: 576px) {
   .dsc-cart-item-container {

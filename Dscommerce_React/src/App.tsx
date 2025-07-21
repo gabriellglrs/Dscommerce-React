@@ -1,8 +1,13 @@
-// import { Link } from "react-router-dom";
+import { useState } from "react";
 import AppRoutes from "./routes/AppRoutes";
+import { ContextCartCount } from "./utils/contextCartCount";
 
-function App() {
-    return <AppRoutes></AppRoutes>;
+export default function App() {
+    const [cartCount, setCartCount] = useState<number>(0);
+
+    return (
+        <ContextCartCount.Provider value={{ cartCount, setCartCount }}>
+            <AppRoutes />
+        </ContextCartCount.Provider>
+    );
 }
-
-export default App;

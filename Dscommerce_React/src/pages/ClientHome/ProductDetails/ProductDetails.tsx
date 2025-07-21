@@ -1,18 +1,20 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { ButtonInverse } from "../../../components/buttonInverse/buttonInverse";
 import ButtonPrimary from "../../../components/ButtonPrimary/ButtonPrimary";
 import ProductDetailsCard from "../../../components/ProductDetailsCard/ProductDetailsCard";
 import "./ProductDetails.css";
 import ProductDetailsNotFound from "../../../components/ProductDetailsNotFound/ProductDetailsNotFound";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import type { Product } from "../../../models/Product";
 import * as productService from "../../../services/product-services";
 import { addProductToCart } from "../../../services/cart-services";
+import ButtonInverse from "../../../components/buttonInverse/buttonInverse";
+import { ContextCartCount } from "../../../utils/contextCartCount";
+import * as cartServices from "../../../services/cart-services";
 
 function ProductDetails() {
     const params = useParams();
     const navigate = useNavigate();
-
+    const {setCartCount} = useContext(ContextCartCount);
     const [product, setProduct] = useState<Product>();
     const [erro, setError] = useState({ error: "", status: 0 });
 
@@ -47,6 +49,7 @@ function ProductDetails() {
     function handleBuyClick() {
         if (product) {
             addProductToCart(product)
+            setCartCount(cartServices.getCart().items.length);
             navigate("/cart");
         }
     }
